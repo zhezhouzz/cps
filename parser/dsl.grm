@@ -1,0 +1,40 @@
+                (*  User declarations section for helper functions *)
+open DslAst
+open Atoms
+
+fun append (h, t) = h @ [t]
+%%
+(* ML Yacc Declarations *)
+%name Untyped (* tokens signature will be Untyped_TOKENS *)
+(*
+  The structure Token is defined by LrParser structure provided
+  by ml-yacc-lib
+*)
+%header (functor UntypedLrValsFun (structure Token : TOKEN) : Untyped_LRVALS)
+%eop EOF
+%noshift EOF
+%pos int
+(*
+  Lex functor is constructed to expect TOKENS signature
+  constructed from following declarations
+ *)
+%term
+LAMBDA | DOT | APP
+                    | LPAREN | RPAREN
+      | VAR of string
+      | EOF
+%nonterm expr of exp
+
+(*
+  Precedence and associativity are implicit
+*)
+%verbose
+%pure
+
+%%
+(* BNF Rules *)
+expr :
+                 VAR (Var (varToId VAR))
+               | LAMBDA VAR DOT expr (Abs(varToId VAR, expr))
+               | APP expr expr (App(expr1, expr2))
+               | LPAREN expr RPAREN (expr)

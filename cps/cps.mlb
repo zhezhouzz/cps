@@ -1,0 +1,7 @@
+local
+  $(SML_LIB)/basis/basis.mlb
+  ../frontend/frontend.mlb
+  cps_trans.sml
+in
+  cps.sml
+end

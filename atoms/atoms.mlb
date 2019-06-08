@@ -1,0 +1,7 @@
+local
+  $(SML_LIB)/basis/basis.mlb
+  hashtbl/hashtblnj.mlb
+in
+  id.sml
+  atoms.sml
+end
